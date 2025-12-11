@@ -1,73 +1,101 @@
-# Noise-Generator
+# Search Noise Generator
 
-## Table of contents
+Lightweight Python utility that generates "search noise" by repeatedly performing (or simulating) web searches. It can perform simple DuckDuckGo HTML queries (when `requests` is available) or run in fully simulated mode to generate harmless, repeatable query traffic for testing, demos, or privacy experiments.
 
+- Status: simple single-file script
+- Language: Python
+- Intended use: testing, demoing, or generating synthetic "search" activity for development and experimentation
+- Warning: do not use to abuse or spam public search engines — respect rate limits and terms of service.
+
+## Table of Contents
 - [Features](#features)
-- [Getting started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Install](#install)
+- [Requirements](#requirements)
+- [Installation](#installation)
 - [Usage](#usage)
-  - [Library (Node.js) example](#library-nodejs-example)
-  - [CLI example](#cli-example)
-- [Configuration / Options](#configuration--options)
+- [Options / Flags](#options--flags)
+- [Terms file format](#terms-file-format)
 - [Examples](#examples)
-- [Tests](#tests)
-- [Development](#development)
+- [Notes / Troubleshooting](#notes--troubleshooting)
 - [Contributing](#contributing)
 - [License](#license)
 
 ## Features
+- Repeatedly issue searches (real HTML DuckDuckGo queries) or simulate search results locally.
+- Several run modes: once, fixed count, or forever.
+- Configurable delay and results-per-search.
+- Uses built-in list of default search terms or loads a one-term-per-line file.
 
-- Generate common noise types:
-  - White, Pink, Brown (Brownian)
-  - Perlin and Simplex noise (for procedural textures)
-  - Seedable RNG for reproducible results
-- Exportable to common formats (raw arrays, WAV, image patterns) — implementers can add exporters
-- Small, modular API intended for use in scripts, apps, or the browser (if applicable)
+## Requirements
+- Python 3.8+
+- Optional: requests (to perform real DuckDuckGo HTML searches)
+  - If requests is not installed, the script falls back to simulated results automatically.
 
-## Getting started
+## Installation
+1. Clone or download the script into a working folder.
+2. (Optional) Install requests to enable real web queries:
+   - pip install requests
 
-### Prerequisites
+No other dependencies are required.
 
-- Node.js (v14+ recommended) if the project is JavaScript/TypeScript
-- Or the appropriate runtime for the implementation contained in this repo
-
-### Install
-
-Clone the repository:
-
+## Usage
+Run the script with Python:
 ```bash
-git clone https://github.com/harmfulladvocado/Noise-Generator.git
-cd Noise-Generator
+python search_noise.py [OPTIONS]
 ```
 
-## Configuration / Options
+Basic modes:
+- once — run a single search and exit
+- count — run a fixed number of searches (use `--count N`)
+- forever — run until interrupted
 
-Common options to support (suggested):
+The script prints a live counter of searches performed and summarizes the total when it exits.
 
-- type: string — 'white' | 'pink' | 'brown' | 'perlin' | 'simplex'
-- seed: number | string — for deterministic noise
-- sampleRate: number — audio sample rate (e.g., 44100)
-- duration: number — duration in seconds for audio output
-- amplitude: number — global amplitude multiplier (0.0–1.0)
-- width / height / scale — for 2D noise textures
+## Options / Flags
+- --mode {once,count,forever} (default: forever)  
+  Repeat mode: run once, for a count, or indefinitely.
+- --count N (default: 10)  
+  Number of searches when `--mode count` is used.
+- --delay FLOAT (default: 2.0)  
+  Seconds to wait between searches.
+- --results INT (default: 5)  
+  Number of results to fetch per search.
+- --real-search (flag, default: on when requests is available)  
+  If requests is installed this flag attempts to perform real DuckDuckGo HTML searches; otherwise the script simulates results.
+- --terms-file PATH  
+  Path to a plaintext file with one search term per line. If omitted the built-in list is used.
 
-Adjust the options shape to fit your library's API.
+## Terms file format
+If you supply `--terms-file path/to/file.txt` the file must contain one search term per line. Blank lines are ignored. Example:
+```
+weather today
+pasta recipes
+python tutorial
+```
+If the file cannot be read the script logs an error and falls back to the built-in default list.
 
 ## Examples
+Run indefinitely (default) using simulation (when requests not installed):
+```bash
+python search_noise.py --mode forever --delay 1.5 --results 3
+```
 
-Include example scripts that demonstrate the project capabilities. Example folders to add to the repo:
+Run 20 searches with a 0.5s delay:
+```bash
+python search_noise.py --mode count --count 20 --delay 0.5 --results 5
+```
 
-- examples/audio-to-wav/ — generate and save a WAV file
-- examples/texture/ — produce PNGs from Perlin/Simplex noise
-- examples/benchmarks/ — demonstrate performance and memory usage
+Run a single search:
+```bash
+python search_noise.py --mode once --results 10
+```
 
-## Tests
+Use a custom terms file:
+```bash
+python search_noise.py --terms-file my_terms.txt --mode count --count 50
+```
 
-Add unit tests covering:
-
-- Each noise type produces expected statistical properties (e.g., mean ≈ 0 for white noise)
-- Reproducibility when using the same seed
-- Exporters produce valid outputs (WAV headers, image files, etc.)
-
+Enable real DuckDuckGo HTML requests (requires requests installed):
+```bash
+pip install requests
+python search_noise.py --mode count --count 10 --real-search
 ```
