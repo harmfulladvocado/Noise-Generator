@@ -5,7 +5,7 @@ Lightweight Python utility that generates "search noise" by repeatedly performin
 - Status: simple single-file script
 - Language: Python
 - Intended use: testing, demoing, or generating synthetic "search" activity for development and experimentation
-- Warning: do not use to abuse or spam public search engines — respect rate limits and terms of service.
+- Warning: do not use to abuse or spam public search engines - respect rate limits and terms of service.
 
 ## Table of Contents
 - [Features](#features)
@@ -44,9 +44,9 @@ python search_noise.py [OPTIONS]
 ```
 
 Basic modes:
-- once — run a single search and exit
-- count — run a fixed number of searches (use `--count N`)
-- forever — run until interrupted
+- once - run a single search and exit
+- count - run a fixed number of searches (use `--count N`)
+- forever - run until interrupted
 
 The script prints a live counter of searches performed and summarizes the total when it exits.
 
