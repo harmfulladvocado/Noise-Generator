@@ -45,14 +45,6 @@ git clone https://github.com/harmfulladvocado/Noise-Generator.git
 cd Noise-Generator
 ```
 
-Install dependencies (adjust to the project stack; example for Node.js):
-
-```bash
-npm install
-# or
-yarn install
-```
-
 ## Usage
 
 Below are example usages. Replace names and imports to match the actual code in this repository.
