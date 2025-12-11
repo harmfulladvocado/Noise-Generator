@@ -1,9 +1,5 @@
 # Noise-Generator
 
-A small, focused project for generating procedural and audio noise. This repository provides tools and examples to generate different types of noise (white, pink, brown, Perlin, Simplex, etc.) for use in audio, procedural textures, testing and simulations.
-
-> NOTE: This README is a general, editable template. Adjust the examples and installation instructions to match the actual implementation and language used in this repository.
-
 ## Table of contents
 
 - [Features](#features)
